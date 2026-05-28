@@ -161,6 +161,21 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .hero-logo {
+      height: 90px;
+      width: auto;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
     }
 
     .nav-links {
@@ -855,7 +870,7 @@
 
   <!-- Navigation -->
   <nav>
-    <a href="#" class="nav-brand">Bow &amp; Stern Soap Co.</a>
+    <a href="#" class="nav-brand"><img src="logo.png" alt="Bow & Stern Soap Company Logo" class="nav-logo" />Bow &amp; Stern Soap Co.</a>
     <div style="display:flex;align-items:center;gap:24px;">
       <a href="https://www.linkedin.com/in/mateo-griffen-32b8a5263/" target="_blank" rel="noopener noreferrer" class="nav-link">Connect on LinkedIn</a>
       <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark/light mode">
@@ -878,6 +893,7 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-text">
+      <img src="logo.png" alt="Bow & Stern Soap Company Logo" class="hero-logo" />
       <p class="hero-eyebrow">Bow &amp; Stern Soap Company</p>
       <h1 class="hero-name">Mateo<br />Griffen</h1>
       <p class="hero-title">CEO &amp; Founder</p>
