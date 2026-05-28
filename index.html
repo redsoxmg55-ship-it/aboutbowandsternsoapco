@@ -508,6 +508,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
+      position: relative;
     }
 
     .footer-brand {
@@ -542,6 +543,24 @@
       font-size: 0.72rem;
       color: rgba(255,255,255,0.35);
       letter-spacing: 0.08em;
+    }
+
+    .footer-usa {
+      position: absolute;
+      bottom: 20px;
+      right: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .footer-usa span {
+      font-size: 1.5rem;
     }
 
     /* ── RESPONSIVE ── */
@@ -1045,6 +1064,9 @@
     <a href="tel:+16176317175" class="footer-phone">617-631-7175</a>
     <a href="mailto:bowandsternsoapco@gmail.com" class="footer-email">bowandsternsoapco@gmail.com</a>
     <span class="footer-copy">&copy; 2026 Mateo Griffen · All rights reserved</span>
+    <div class="footer-usa">
+      <span>🇺🇸</span> Made in the USA
+    </div>
   </footer>
 
 
