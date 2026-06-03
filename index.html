@@ -471,6 +471,78 @@
       flex-wrap: wrap;
     }
 
+    /* ── CONTACT FORM ── */
+    .contact-form {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(184,149,90,0.35);
+      padding: 14px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      outline: none;
+      border-radius: 0;
+      transition: border-color 0.2s;
+    }
+
+    body.dark-mode .contact-form input,
+    body.dark-mode .contact-form textarea {
+      color: rgba(255,255,255,0.85);
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: var(--text-light);
+      letter-spacing: 0.06em;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .contact-form button[type="submit"] {
+      align-self: center;
+      background: var(--gold);
+      border: none;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 14px 40px;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .contact-form button[type="submit"]:hover {
+      opacity: 0.85;
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      margin-top: 12px;
+    }
+
     .btn-linkedin, .btn-instagram {
       display: inline-flex;
       align-items: center;
@@ -1103,7 +1175,20 @@
         or an individual wanting to learn more about what Bow &amp; Stern Soap Company
         offers, Mateo welcomes the conversation. Connect on LinkedIn or follow along on Instagram.
       </p>
-      <div class="connect-buttons">
+      <form
+        class="contact-form reveal delay-3"
+        id="contactForm"
+        action="https://formspree.io/f/xnjyazqe"
+        method="POST"
+      >
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <p class="form-success" id="formSuccess">Thank you — your message has been received.</p>
+
+      <div class="connect-buttons" style="margin-top:48px;">
         <a
           href="https://www.linkedin.com/in/mateo-griffen-32b8a5263/"
           target="_blank"
@@ -1324,6 +1409,27 @@
   // Also try after a short delay in case the browser needs time
   setTimeout(tryPlayVideo, 500);
   setTimeout(tryPlayVideo, 1500);
+
+  /* ── CONTACT FORM ── */
+  const contactForm = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('formSuccess');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(contactForm);
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        contactForm.style.display = 'none';
+        formSuccess.style.display = 'block';
+      } else {
+        alert('Something went wrong. Please try again or email bowandsternsoapco@gmail.com directly.');
+      }
+    });
+  }
 
   /* ── SEASON TOGGLE SYSTEM ── */
   (function() {
