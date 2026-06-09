@@ -82,18 +82,6 @@
       --text-light:#7A7A7A;
     }
 
-    /* ── SPRING / SUMMER OVERRIDE — toggled by body.season-spring ── */
-    body.season-spring {
-      --navy:      #1E6F9F;
-      --navy-mid:  #2D87BC;
-      --gold:      #C9A252;
-      --off-white: #FDF8EF;
-      --light-gray:#EDE7DB;
-    }
-
-    /* season palette crossfade */
-    body.season-transitioning * { transition: none !important; }
-
     /* ── DARK MODE OVERRIDES ── */
     body.dark-mode {
       --off-white:  #0A1824;
@@ -762,69 +750,6 @@
       transform: translateY(0);
     }
 
-    /* ── ADMIN PANEL — season switcher, hidden from visitors ──
-       Activate by visiting your site with ?admin=1 in the URL
-       Deactivate: click × or visit ?admin=0                   */
-    #bs-admin-bar {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 9100;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--navy);
-      border: 1px solid rgba(184,149,90,0.40);
-      padding: 11px 16px;
-      box-shadow: 0 6px 32px rgba(0,0,0,0.35);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.63rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .adm-label { color: var(--gold); font-weight: 600; }
-    .adm-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.18); }
-
-    .adm-season-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.65);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.63rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 14px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .adm-season-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-    .adm-close {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.35);
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0 2px;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-    .adm-close:hover { color: #C0635D; }
-
-    .season-toggle-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-
   </style>
 </head>
 
@@ -1424,82 +1349,6 @@
     });
   }
 
-  /* ── SEASON TOGGLE SYSTEM ── */
-  (function() {
-    const SEASON_KEY = 'bs_season';
-
-    function autoSeason() {
-      const m = new Date().getMonth(); // 0=Jan…11=Dec
-      return (m === 11 || m <= 1) ? 'winter' : 'spring';
-    }
-
-    function loadSeason() {
-      const p = new URLSearchParams(location.search).get('season');
-      if (p === 'winter' || p === 'spring') { localStorage.setItem(SEASON_KEY, p); return p; }
-      const s = localStorage.getItem(SEASON_KEY);
-      return (s === 'winter' || s === 'spring') ? s : autoSeason();
-    }
-
-    function applySeason(s, save) {
-      document.body.classList.toggle('season-spring', s === 'spring');
-      if (save) localStorage.setItem(SEASON_KEY, s);
-      document.querySelectorAll('[data-season-btn]').forEach(btn => {
-        btn.innerHTML = `<span class="season-toggle-dot"></span>${s === 'spring' ? 'Summer Mode' : 'Winter Mode'}`;
-        btn.title = s === 'spring' ? 'Click to switch to Winter' : 'Click to switch to Spring / Summer';
-      });
-    }
-
-    function toggleSeason() {
-      const cur = document.body.classList.contains('season-spring') ? 'spring' : 'winter';
-      const next = cur === 'spring' ? 'winter' : 'spring';
-      document.body.classList.add('season-transitioning');
-      requestAnimationFrame(() => {
-        applySeason(next, true);
-        requestAnimationFrame(() => document.body.classList.remove('season-transitioning'));
-      });
-    }
-
-    window.BS_setSeason    = s => applySeason(s, true);
-    window.BS_toggleSeason = () => toggleSeason();
-
-    /* ── Admin panel — activate with ?admin=1 in your URL ── */
-    function setupAdminPanel() {
-      const params = new URLSearchParams(location.search);
-      if (params.get('admin') === '1') sessionStorage.setItem('bs_admin', '1');
-      if (params.get('admin') === '0') sessionStorage.removeItem('bs_admin');
-      if (sessionStorage.getItem('bs_admin') !== '1') return;
-
-      const panel = document.createElement('div');
-      panel.id = 'bs-admin-bar';
-      panel.innerHTML = `
-        <span class="adm-label">Admin</span>
-        <span class="adm-divider"></span>
-        <button class="adm-season-btn" data-season-btn title="Toggle season">
-          <span class="season-toggle-dot"></span><span class="adm-season-text">—</span>
-        </button>
-        <button class="adm-close" title="Hide panel">×</button>`;
-      document.body.appendChild(panel);
-
-      panel.querySelector('.adm-close').addEventListener('click', () => {
-        sessionStorage.removeItem('bs_admin');
-        panel.remove();
-      });
-
-      const orig = applySeason;
-      applySeason = function(s, save) {
-        orig(s, save);
-        const t = panel.querySelector('.adm-season-text');
-        if (t) t.textContent = s === 'spring' ? 'Spring / Summer' : 'Winter';
-      };
-      const t = panel.querySelector('.adm-season-text');
-      if (t) t.textContent = document.body.classList.contains('season-spring') ? 'Spring / Summer' : 'Winter';
-
-      panel.querySelector('[data-season-btn]').addEventListener('click', toggleSeason);
-    }
-
-    applySeason(loadSeason(), false);
-    setupAdminPanel();
-  })();
 </script>
 
 </body>
