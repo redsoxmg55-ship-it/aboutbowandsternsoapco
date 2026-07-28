@@ -456,6 +456,22 @@
       line-height: 1.8;
     }
 
+    .btn-shop {
+      display: inline-block;
+      margin-top: 32px;
+      background: var(--gold);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 48px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-shop:hover { opacity: 0.85; }
+
     .connect-buttons {
       display: flex;
       gap: 16px;
@@ -1096,18 +1112,14 @@
         or an individual wanting to learn more about what Bow &amp; Stern Soap Company
         offers, Mateo welcomes the conversation. Connect on LinkedIn or follow along on Instagram.
       </p>
-      <form
-        class="contact-form reveal delay-3"
-        id="contactForm"
-        action="https://formspree.io/f/xnjyazqe"
-        method="POST"
+      <a
+        href="https://shopbowandsternsoap.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-shop reveal delay-3"
       >
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-      <p class="form-success" id="formSuccess">Thank you — your message has been received.</p>
+        Shop Bow &amp; Stern Soap Co. →
+      </a>
 
       <div class="connect-buttons" style="margin-top:48px;">
         <a
